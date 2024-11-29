@@ -1,9 +1,9 @@
-package DAY_0X;
+package DAY_01;
 
 import Reader.FileReader;
 import Reader.InputType;
 
-public class DAY_0X_1 {
+public class DAY_01_1 {
 
     private static final String DAY = "0X";
 
