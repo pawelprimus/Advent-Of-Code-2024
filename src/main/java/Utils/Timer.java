@@ -4,12 +4,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Timer {
 
-    public static void stoper() {
-        long startTime = System.nanoTime();
-        printEndTime(startTime);
+    private static long startTime;
+
+    public static void startTimer(){
+        startTime = System.nanoTime();
     }
 
-    private static void printEndTime(long startTime) {
+
+    public static void printEndTime() {
         long endTime = System.nanoTime();
         long totalTime = endTime - startTime;
         long millis = TimeUnit.NANOSECONDS.toMillis(totalTime);

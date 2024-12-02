@@ -31,7 +31,6 @@ public class DAY_01_2 {
             sum += num * rightPart[num];
         }
 
-        Timer.stoper();
         System.out.println("RESULT: " + sum); // 18934359
     }
 }

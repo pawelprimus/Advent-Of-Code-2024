@@ -31,7 +31,6 @@ public class DAY_01_1 {
             distancesSum += Math.abs(sortedLeftList[i] - sortedRightList[i]);
         }
 
-        Timer.stoper();
         System.out.println("RESULT: " + distancesSum); // 2378066
     }
 }
