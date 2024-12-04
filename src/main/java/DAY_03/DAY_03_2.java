@@ -4,8 +4,12 @@ import Reader.FileReader;
 import Reader.InputType;
 import Utils.Timer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static Utils.Colours.*;
 
 public class DAY_03_2 {
 
@@ -15,37 +19,64 @@ public class DAY_03_2 {
 
     private static final String DO = "do\\(\\)";
     private static final String DO_NOT = "don't\\(\\)";
-    //private static final String ALL_BETWEEN = DO_NOT + "\\.+" + DO;
-    private static final String ALL_BETWEEN = "don't\\((.+?)\\)do\\(\\)";
 
     public static void main(String[] args) throws Exception {
         Timer.startTimer();
         String input = FileReader.readFileAsString(DAY, InputType.NORMAL);
 
-        // xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))
+        List<Integer> doList = matcherToIndexList(input, DO);
+        List<Integer> doNotList = matcherToIndexList(input, DO_NOT);
 
-        Pattern mulPattern = Pattern.compile(ALL_BETWEEN);
-        Matcher mulMatcher = mulPattern.matcher(input);
+        boolean isEnabled = true;
+        StringBuilder sb = new StringBuilder();
 
-        String copiedInput = new String(input);
-        input = input.replaceAll(ALL_BETWEEN, "");
-        input = input.replaceAll("don't\\(\\).+", "");
+        for (int i = 0; i < input.length(); i++) {
+            print(isEnabled, input.charAt(i));
+            if(i %200 == 0){
+                System.out.println();
+            }
+            // add only if is enabled
+            if (isEnabled) {
+                sb.append(input.charAt(i));
+            }
 
-        
-//        while (mulMatcher.find()) {
-//
-//            mulMatcher.group();
-//            int startIndex = mulMatcher.start();
-//            int endIndex = mulMatcher.end();
-//
-//            System.out.println(input.substring(startIndex, endIndex));
-//        }
-//        System.out.println(input);
-        System.out.println(input);
+            if (isEnabled) {
+                if (doNotList.contains(i)) {
+                    i+=4;
+                    isEnabled = false;
+                }
+            } else {
+                if (doList.contains(i)) {
+                    isEnabled = true;
+                }
+            }
 
-        int result = countSum(input);            // 78882157
-        System.out.println("RESULT: " + result); // 84011518 TOO LOW       // 122212172 TOO HIGH
-        Timer.printEndTime();                    // 67549697
+        }
+
+        int result = countSum(sb.toString());
+        System.out.println("RESULT: " + result); //106921067
+        Timer.printEndTime();
+    }
+
+    private static List<Integer> matcherToIndexList(String input , String regex){
+        List<Integer> indexes = new ArrayList<>();
+        Pattern doNotPattern = Pattern.compile(regex);
+        Matcher dNotoMatcher = doNotPattern.matcher(input);
+
+        while (dNotoMatcher.find()) {
+            dNotoMatcher.group();
+            int startIndex = dNotoMatcher.start();
+            indexes.add(startIndex);
+        }
+        return indexes;
+    }
+
+    public static void print(boolean isEnabled, char c) {
+        if (isEnabled) {
+            System.out.print(ANSI_GREEN  + c  + ANSI_RESET);
+        } else {
+            System.out.print(ANSI_RED + c + ANSI_RESET);
+        }
     }
 
     private static int countSum(String string) {
