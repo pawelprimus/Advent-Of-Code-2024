@@ -31,6 +31,7 @@ public class DAY_03_2 {
         input = input.replaceAll(ALL_BETWEEN, "");
         input = input.replaceAll("don't\\(\\).+", "");
 
+        
 //        while (mulMatcher.find()) {
 //
 //            mulMatcher.group();
